@@ -1,6 +1,6 @@
 {
     "name": "active-filtering",
-    "version": "6.17.0",
+    "version": "6.19.0",
     "description": "",
     "main": "demo.js",
     "scripts": {
@@ -17,6 +17,6 @@
     },
     "homepage": "https://github.com/jsplumb-demonstrations/active-filtering#readme",
     "dependencies": {
-        "@jsplumbtoolkit/browser-ui": "^6.17.0"
+        "@jsplumbtoolkit/browser-ui": "^6.19.0"
     }
 }
