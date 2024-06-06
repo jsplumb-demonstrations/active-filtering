@@ -143,8 +143,8 @@ ready(() =>{
                 toolkit.clearSelection()
             },
             [EVENT_SURFACE_MODE_CHANGED]: (mode:string) => {
-                renderer.removeClass(document.querySelector(SELECTOR_SELECTED_MODE), CLASS_SELECTED_MODE)
-                renderer.addClass(document.querySelector("[mode='" + mode + "']"), CLASS_SELECTED_MODE)
+                document.querySelector(SELECTOR_SELECTED_MODE).classList.remove(CLASS_SELECTED_MODE)
+                document.querySelector("[mode='" + mode + "']").classList.add(CLASS_SELECTED_MODE)
             }
         },
         consumeRightClick:false,
@@ -174,9 +174,9 @@ ready(() =>{
     // take it off.
     //
     function flash(el:Element) {
-        renderer.addClass(el, CLASS_HIGHLIGHT)
+        el.classList.add(CLASS_HIGHLIGHT)
         setTimeout(function() {
-            renderer.removeClass(el, CLASS_HIGHLIGHT)
+            el.classList.add(CLASS_HIGHLIGHT)
         }, 1950)
     }
 
