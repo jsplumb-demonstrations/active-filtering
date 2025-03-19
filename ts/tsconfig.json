@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2016",
     "module": "esnext",
     "outDir": "_build",
     "moduleResolution": "node",
@@ -8,7 +8,7 @@
     "declaration":true,
     "emitDecoratorMetadata": false,
     "experimentalDecorators": false,
-    "lib": [ "esnext", "dom" ],
+    "lib": [ "es2016", "dom" ],
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowJs":false,
