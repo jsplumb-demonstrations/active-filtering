@@ -1,11 +1,9 @@
 
 import {
     SurfaceViewOptions,
-    EVENT_CLICK,
-    SurfaceMode,
     EVENT_CANVAS_CLICK,
-    EVENT_SURFACE_MODE_CHANGED,
-    DEFAULT, AnchorLocations,
+    DEFAULT,
+    AnchorLocations,
     DotEndpoint,
     ready,
     newInstance,
@@ -18,11 +16,11 @@ import {
     ForceDirectedLayout,
     MiniviewPlugin,
     ActiveFilteringPlugin,
-    LassoPlugin, StateMachineConnector
+    LassoPlugin,
+    ControlsComponent,
+    CONNECTOR_TYPE_SMOOTH
 } from "@jsplumbtoolkit/browser-ui"
 
-const CLASS_SELECTED_MODE = "selected-mode"
-const SELECTOR_SELECTED_MODE = "." + CLASS_SELECTED_MODE
 const CLASS_HIGHLIGHT = "hl"
 
 ready(() =>{
@@ -67,8 +65,8 @@ ready(() =>{
     const words = [ "CAT", "DOG", "COW", "HORSE", "DUCK", "HEN" ]
 
     const randomPort = (index:number) => {
-        const out = [], map = {}
-        function _one() {
+        const out:Array<string> = [], map = {}
+        function _one():string {
             let a, done = false
             while (!done) {
                 a = words[Math.floor(Math.random() * words.length)]
@@ -109,13 +107,6 @@ ready(() =>{
             [DEFAULT]: {
                 templateId: "tmplNode"
             }
-        },
-        edges: {
-            [DEFAULT]: {
-                connector: { type:StateMachineConnector.type, options:{ curviness: 10 } },
-                endpoint: { type:DotEndpoint.type, options:{ radius: 10 } },
-                anchor: { type:AnchorLocations.Continuous, options:{ faces:["left", "right"]} }
-            }
         }
     };
 
@@ -141,32 +132,40 @@ ready(() =>{
         events: {
             [EVENT_CANVAS_CLICK]: (e:Event) => {
                 toolkit.clearSelection()
-            },
-            [EVENT_SURFACE_MODE_CHANGED]: (mode:string) => {
-                document.querySelector(SELECTOR_SELECTED_MODE).classList.remove(CLASS_SELECTED_MODE)
-                document.querySelector("[mode='" + mode + "']").classList.add(CLASS_SELECTED_MODE)
             }
         },
         consumeRightClick:false,
-        // disable dragging from anywhere in the individual animal elements (drag can only be done via the header)
-        dragOptions:{
-            filter:"[data-jtk-port], [data-jtk-port] *"
-        },
         templateMacros:{
             id:(data:ObjectData) => data.id.substring(0, 5),
             entryNames:(data:ObjectData) => data.entries.join(' ')
+        },
+        defaults:{
+            edgesAvoidVertices:true,
+            connector:CONNECTOR_TYPE_SMOOTH,
+            endpoint: { type:DotEndpoint.type, options:{ radius: 10 } },
+            anchor:[AnchorLocations.Left, AnchorLocations.Right]
+        },
+        magnetize:{
+            constant:true,
+            trackback:true
         }
     })
 
-    // pan mode/select mode
-    renderer.on(mainElement, EVENT_CLICK, "[mode]",  (e:Event, el:HTMLElement) => {
-        renderer.setMode(el.getAttribute("mode") as SurfaceMode)
-    })
 
-    // on home button tap, zoom content to fit.
-    renderer.on(mainElement, EVENT_CLICK, "[reset]",  () => {
-        toolkit.clearSelection()
-        renderer.zoomToFit()
+    new ControlsComponent(document.getElementById("controls"), renderer, {
+        buttons:[
+            {
+                id:"add",
+                class:"add-new",
+                title:"Add New Element",
+                handler:(e:MouseEvent, id:string) => {
+                    const node = newNode()
+                    renderer.zoomToFit()
+                    flash(renderer.getRenderedElement(node))
+                    renderer.repaintEverything()
+                }
+            }
+        ]
     })
 
     //
@@ -176,14 +175,7 @@ ready(() =>{
     function flash(el:Element) {
         el.classList.add(CLASS_HIGHLIGHT)
         setTimeout(function() {
-            el.classList.add(CLASS_HIGHLIGHT)
+            el.classList.remove(CLASS_HIGHLIGHT)
         }, 1950)
     }
-
-    // on add node button, add a new node, zoom the display, flash the new element.
-    renderer.on(mainElement, EVENT_CLICK, "[add]", () => {
-        const node = newNode()
-        renderer.zoomToFit()
-        flash(renderer.getRenderedElement(node))
-    });
 })
