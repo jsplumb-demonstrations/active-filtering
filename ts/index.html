@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>jsPlumb Toolkit - Active filtering demonstration</title>
+        <title>JsPlumb - Active filtering</title>
         <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
 
         <!-- CSS -->
@@ -30,12 +30,7 @@
             <!-- this is the main drawing area -->
             <div class="jtk-demo-canvas canvas-wide">
                 <!-- controls -->
-                <div class="controls">
-                    <i class="fa fa-arrows selected-mode" mode="pan" title="Pan Mode"></i>
-                    <i class="fa fa-pencil" mode="select" title="Select Mode"></i>
-                    <i class="fa fa-home" reset title="Zoom To Fit"></i>
-                    <i class="fa fa-plus" add title="Add a Node"></i>
-                </div>
+                <div id="controls"></div>
                 <!-- miniview -->
                 <div class="miniview"></div>
             </div>
@@ -56,6 +51,7 @@
                         Each Node contains a set of entries which each contain the name of two types of animal. Entries are
                         deemed connectable if one or more animals from the source entry are matched in a given target.
                     </p>
+                    <p>Press the + button to add a new node in a random position</p>
                 </div>
                 <!-- the current dataset -->
                 <div class="jtk-demo-dataset"></div>
