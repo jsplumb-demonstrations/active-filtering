@@ -1,6 +1,6 @@
 {
     "name": "active-filtering",
-    "version": "6.90.0",
+    "version": "7.0.0",
     "description": "",
     "scripts": {
         "build-es6": "./node_modules/.bin/esbuild demo.ts --target=es2016 --bundle --format=iife --outfile=bundle.js",
@@ -28,5 +28,6 @@
         "babel-preset-env": "^1.7.0",
         "esbuild": "0.17.18",
         "http-server": "14.1.1"
-    }
+    },
+    "dependencies": {}
 }
